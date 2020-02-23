@@ -19,19 +19,20 @@
   },
   "license": "MIT",
   "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "main:src": "src/index.js",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     },
     "./cancelablePromise": {
-      "import": "./dist/cancelablePromise.js",
-      "require": "./dist/cancelablePromise.cjs"
+      "import": "./dist/cancelablePromise.mjs",
+      "require": "./dist/cancelablePromise.js"
     },
     "./CancelableRequest": {
-      "import": "./dist/CancelableRequest.js",
-      "require": "./dist/CancelableRequest.cjs"
+      "import": "./dist/CancelableRequest.mjs",
+      "require": "./dist/CancelableRequest.js"
     }
   },
   "files": [
