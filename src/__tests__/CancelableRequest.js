@@ -10,13 +10,13 @@ describe('CancelableRequest', () => {
   let requestObj;
   let requested;
   let canceled;
-  let cancelSubRequest;
+  let afterCancelRequest;
 
   beforeEach(() => {
     jest.resetModules();
-    cancelSubRequest = jest.fn();
+    afterCancelRequest = jest.fn();
     mockFn = jest.fn(data => Promise.resolve(data));
-    cancelableRequest = new CancelableRequest(mockFn, 'test', cancelSubRequest);
+    cancelableRequest = new CancelableRequest(mockFn, 'test', afterCancelRequest);
     cancelableRequestErr = new CancelableRequest(mockFnErr);
     mockFnErr = jest.fn(() => Promise.reject(testError));
     arg = {};
@@ -63,12 +63,12 @@ describe('CancelableRequest', () => {
       expect(cancelableRequest._canceled).toEqual(false);
     }));
 
-  it('cancelSubRequest', () => {
+  it('afterCancelRequest', () => {
     const promise = cancelableRequest.request(arg);
 
     cancelableRequest.cancelRequest();
 
-    expect(cancelSubRequest).toHaveBeenCalledTimes(1);
+    expect(afterCancelRequest).toHaveBeenCalledTimes(1);
 
     return promise.catch(error => {
       expect(isCanceledError(error)).toEqual(true);

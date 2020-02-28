@@ -10,16 +10,16 @@ export default class CancelableRequest {
    *
    * @param {function} targetRequest    - The target request
    * @param {string}   moduleName       - The module name
-   * @param {function} cancelSubRequest - The function for cancel subrequest
+   * @param {function} afterCancelRequest - The function for cancel subrequest
    */
-  constructor(targetRequest, moduleName, cancelSubRequest = () => {}) {
+  constructor(targetRequest, moduleName, afterCancelRequest = () => {}) {
     this._requested = false;
     this._canceled = false;
     this._requestObj = null;
 
     this.targetRequest = targetRequest;
     this.moduleName = moduleName || this.constructor.name;
-    this.cancelSubRequest = cancelSubRequest;
+    this.afterCancelRequest = afterCancelRequest;
   }
 
   /**
@@ -62,7 +62,7 @@ export default class CancelableRequest {
       this.requested = false;
       this.canceled = true;
       request.cancel();
-      this.cancelSubRequest();
+      this.afterCancelRequest();
     }
   }
 

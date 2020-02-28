@@ -21,7 +21,87 @@ yarn add @krivega/cancelable-promise
 
 ## Usage
 
+### cancelablePromise
+
+```js
+import cancelablePromise, {
+  isCanceledError
+} from '@krivega/cancelable-promise/dist/cancelablePromise';
+
+const basePromise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('done');
+  }, 5000);
+});
+
+const promise = cancelablePromise(basePromise);
+
+promise.cancel();
+
+promise
+  .then(() => {
+    // will not be called
+  })
+  .catch(error => {
+    if (isCanceledError(error)) {
+      console.log('promise is canceled!');
+    }
+  });
+```
+
+### CancelableRequest
+
+```js
+import CancelableRequest, {
+  isCanceledError
+} from '@krivega/cancelable-promise/dist/CancelableRequest';
+
+const request = () =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve('done');
+    }, 5000);
+  });
+
+const cancelableRequester = new CancelableRequest(request);
+
+const promise1 = cancelableRequest.request();
+const promise2 = cancelableRequest.request();
+
+promise1
+  .then(() => {
+    // will not be called
+  })
+  .catch(error => {
+    if (isCanceledError(error)) {
+      console.log('promise is canceled!');
+    }
+  });
+promise1.then(() => {
+  console.log('done');
+});
+```
+
 ## API
+
+### CancelableRequest.cancelRequest
+
+```js
+const cancelableRequester = new CancelableRequest(request);
+
+const promise = cancelableRequest.request();
+cancelableRequest.cancelRequest();
+
+promise
+  .then(() => {
+    // will not be called
+  })
+  .catch(error => {
+    if (isCanceledError(error)) {
+      console.log('promise is canceled!');
+    }
+  });
+```
 
 ## Run tests
 
