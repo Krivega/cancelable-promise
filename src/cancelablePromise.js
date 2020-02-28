@@ -25,21 +25,15 @@ export const createErrorCanceled = (basePromise, moduleName = '') => ({
  * @returns {Promise} cancelablePromise
  */
 const cancelablePromise = (basePromise, moduleName) => {
-  let isCanceled = false;
-  const promise = new Promise((resolve, reject) =>
-    basePromise
-      .then(data => {
-        if (isCanceled) {
-          reject(createErrorCanceled(basePromise, moduleName));
-        } else {
-          resolve(data);
-        }
-      })
-      .catch(error => reject(isCanceled ? createErrorCanceled(basePromise, moduleName) : error))
-  );
+  let rejectOuter;
+
+  const promise = new Promise((resolve, reject) => {
+    rejectOuter = reject;
+    basePromise.then(resolve).catch(reject);
+  });
 
   promise.cancel = () => {
-    isCanceled = true;
+    rejectOuter(createErrorCanceled(basePromise, moduleName));
   };
 
   return promise;
