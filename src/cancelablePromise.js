@@ -13,7 +13,7 @@ export const createErrorCanceled = (basePromise, moduleName = '') => ({
   moduleName,
   id: idError,
   name: 'Canceled',
-  message: 'Promise is canceled'
+  message: 'Promise is canceled',
 });
 
 /**

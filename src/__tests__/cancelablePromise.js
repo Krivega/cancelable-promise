@@ -2,7 +2,7 @@ import cancelablePromise, { isCanceledError } from '../cancelablePromise';
 
 describe('cancelablePromise', () => {
   it('resolved', () => {
-    return cancelablePromise(Promise.resolve(true)).then(data => expect(data).toBe(true));
+    return cancelablePromise(Promise.resolve(true)).then((data) => expect(data).toBe(true));
   });
 
   it('rejected', () => {
@@ -12,7 +12,7 @@ describe('cancelablePromise', () => {
     const basePromise = Promise.reject(basePromiseError);
     const promise = cancelablePromise(basePromise);
 
-    return promise.catch(error => {
+    return promise.catch((error) => {
       expect(error).toBe(basePromiseError);
     });
   });
@@ -25,7 +25,7 @@ describe('cancelablePromise', () => {
 
     promise.cancel();
 
-    return promise.catch(error => {
+    return promise.catch((error) => {
       expect(isCanceledError(error)).toBe(true);
       expect(error.basePromise).toBe(basePromise);
     });
@@ -39,7 +39,7 @@ describe('cancelablePromise', () => {
 
     promise.cancel();
 
-    return promise.catch(error => {
+    return promise.catch((error) => {
       expect(isCanceledError(error)).toBe(true);
       expect(error.basePromise).toBe(basePromise);
     });

@@ -15,7 +15,7 @@ describe('CancelableRequest', () => {
   beforeEach(() => {
     jest.resetModules();
     afterCancelRequest = jest.fn();
-    mockFn = jest.fn(data => Promise.resolve(data));
+    mockFn = jest.fn((data) => Promise.resolve(data));
     cancelableRequest = new CancelableRequest(mockFn, 'test', afterCancelRequest);
     cancelableRequestErr = new CancelableRequest(mockFnErr);
     mockFnErr = jest.fn(() => Promise.reject(testError));
@@ -26,7 +26,7 @@ describe('CancelableRequest', () => {
   });
 
   it('request resolve', () => {
-    return cancelableRequest.request(arg).then(data => {
+    return cancelableRequest.request(arg).then((data) => {
       expect(data).toEqual(arg);
       expect(mockFn).toHaveBeenCalledTimes(1);
       expect(cancelableRequest._requested).toBe(false);
@@ -36,7 +36,7 @@ describe('CancelableRequest', () => {
   it('request reject', () => {
     expect.assertions(2);
 
-    return cancelableRequestErr.request(arg).catch(data => {
+    return cancelableRequestErr.request(arg).catch((data) => {
       expect(data).toEqual(testError);
       expect(cancelableRequestErr._requested).toBe(false);
     });
@@ -50,7 +50,7 @@ describe('CancelableRequest', () => {
     expect(cancelableRequest._requested).toEqual(false);
     expect(cancelableRequest._canceled).toEqual(true);
 
-    return promise.catch(error => {
+    return promise.catch((error) => {
       expect(isCanceledError(error)).toEqual(true);
     });
   });
@@ -70,7 +70,7 @@ describe('CancelableRequest', () => {
 
     expect(afterCancelRequest).toHaveBeenCalledTimes(1);
 
-    return promise.catch(error => {
+    return promise.catch((error) => {
       expect(isCanceledError(error)).toEqual(true);
     });
   });
