@@ -62,7 +62,7 @@
     "rollup": "^2.3.1",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-terser": "^5.2.0",
-    "standard-version": "^7.1.0"
+    "standard-version": "^8.0.1"
   },
   "scripts": {
     "lint": "eslint src/. --ext .js",
