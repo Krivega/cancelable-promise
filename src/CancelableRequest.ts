@@ -2,7 +2,7 @@ import createCancelablePromise, { isCanceledError as _isCanceledError } from './
 import type { ICancelablePromise } from './cancelablePromise';
 
 export interface ITargetRequest<T> {
-  (args?: any[]): Promise<T>;
+  (...args: any[]): Promise<T>;
 }
 
 export default class CancelableRequest<T = any> {
