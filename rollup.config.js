@@ -9,17 +9,6 @@ const plugins = [
   }),
   terser(),
 ];
-// const getOutputModule = (moduleName) => [
-//   {
-//     file: pkg.exports[moduleName].require,
-//     format: 'cjs',
-//     exports: 'named',
-//   },
-//   {
-//     file: pkg.exports[moduleName].import,
-//     format: 'es',
-//   },
-// ];
 
 const config = {
   plugins,
@@ -29,7 +18,5 @@ const config = {
     { file: pkg.module, format: 'es', sourcemap: true },
   ],
 };
-
-// input: './src/index.ts', output: getOutputModule('.')
 
 export default config;
