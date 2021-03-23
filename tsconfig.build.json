@@ -1,0 +1,4 @@
+{
+  "extends": "./tsconfig.compiler.json",
+  "exclude": ["**/__tests__/**", "**/setupTests.*"]
+}
