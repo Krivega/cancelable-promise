@@ -36,10 +36,13 @@ export default class CancelableRequest<T = any> {
     this.requested = true;
     this.canceled = false;
 
-    this._cancelablePromise = createCancelablePromise(this.targetRequest(...args), this.moduleName);
+    this._cancelablePromise = createCancelablePromise<T>(
+      this.targetRequest(...args),
+      this.moduleName
+    );
 
     try {
-      const result = await this.cancelablePromise;
+      const result: T = (await this.cancelablePromise) as T;
 
       this.requested = false;
 
