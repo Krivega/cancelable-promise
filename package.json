@@ -18,29 +18,17 @@
     "email": "mr.krivega@gmail.com",
     "url": "https://krivega.com"
   },
-  "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
-    },
-    "./CancelableRequest": {
-      "import": "./dist/CancelableRequest.mjs",
-      "require": "./dist/CancelableRequest.js"
-    },
-    "./cancelablePromise": {
-      "import": "./dist/cancelablePromise.mjs",
-      "require": "./dist/cancelablePromise.js"
-    }
-  },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "typings": "dist/types/index.d.ts",
   "files": [
-    "dist/**/*",
-    "README.md"
+    "dist"
   ],
   "scripts": {
-    "build": "NODE_ENV=production rollup --config",
+    "prebuild": "rimraf dist",
+    "build": "yarn build:ts && yarn build:js",
+    "build:js": "NODE_ENV=production rollup --config",
+    "build:ts": "tsc --module commonjs",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint src/. --ext .ts",
     "prepare": "npm run build",

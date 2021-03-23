@@ -9,30 +9,27 @@ const plugins = [
   }),
   terser(),
 ];
-const getOutputModule = (moduleName) => [
-  {
-    file: pkg.exports[moduleName].require,
-    format: 'cjs',
-    exports: 'named',
-  },
-  {
-    file: pkg.exports[moduleName].import,
-    format: 'es',
-  },
-];
+// const getOutputModule = (moduleName) => [
+//   {
+//     file: pkg.exports[moduleName].require,
+//     format: 'cjs',
+//     exports: 'named',
+//   },
+//   {
+//     file: pkg.exports[moduleName].import,
+//     format: 'es',
+//   },
+// ];
 
-const config = [
-  {
-    plugins,
-    input: './src/cancelablePromise.ts',
-    output: getOutputModule('./cancelablePromise'),
-  },
-  {
-    plugins,
-    input: './src/CancelableRequest.ts',
-    output: getOutputModule('./CancelableRequest'),
-  },
-  { plugins, input: './src/index.ts', output: getOutputModule('.') },
-];
+const config = {
+  plugins,
+  input: pkg['main:src'],
+  output: [
+    { file: pkg.main, format: 'umd', sourcemap: true, name: 'cancelablePromise' },
+    { file: pkg.module, format: 'es', sourcemap: true },
+  ],
+};
+
+// input: './src/index.ts', output: getOutputModule('.')
 
 export default config;
