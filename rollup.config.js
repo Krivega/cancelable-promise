@@ -1,32 +1,38 @@
-import babel from 'rollup-plugin-babel';
+import typescript from 'rollup-plugin-typescript2';
 import { terser } from 'rollup-plugin-terser';
 import pkg from './package.json';
 
-const plugins = [babel(), terser()];
-const getOutputModule = moduleName => {
-  return [
-    {
-      file: pkg.exports[moduleName].require,
-      format: 'cjs',
-      exports: 'named'
-    },
-    {
-      file: pkg.exports[moduleName].import,
-      format: 'es'
-    }
-  ];
-};
+const plugins = [
+  typescript({
+    useTsconfigDeclarationDir: true,
+    tsconfigOverride: { exclude: ['**/__tests__/**', '**/setupTests.*'] },
+  }),
+  terser(),
+];
+const getOutputModule = (moduleName) => [
+  {
+    file: pkg.exports[moduleName].require,
+    format: 'cjs',
+    exports: 'named',
+  },
+  {
+    file: pkg.exports[moduleName].import,
+    format: 'es',
+  },
+];
 
-export default [
-  { plugins, input: './src/index.js', output: getOutputModule('.') },
+const config = [
   {
     plugins,
-    input: './src/cancelablePromise.js',
-    output: getOutputModule('./cancelablePromise')
+    input: './src/cancelablePromise.ts',
+    output: getOutputModule('./cancelablePromise'),
   },
   {
     plugins,
-    input: './src/CancelableRequest.js',
-    output: getOutputModule('./CancelableRequest')
-  }
+    input: './src/CancelableRequest.ts',
+    output: getOutputModule('./CancelableRequest'),
+  },
+  { plugins, input: './src/index.ts', output: getOutputModule('.') },
 ];
+
+export default config;

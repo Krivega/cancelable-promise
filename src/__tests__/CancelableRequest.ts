@@ -1,37 +1,31 @@
 import CancelableRequest, { isCanceledError } from '../CancelableRequest';
+import type { ITargetRequest } from '../CancelableRequest';
 
 describe('CancelableRequest', () => {
   const testError = new Error('error');
-  let cancelableRequest;
-  let cancelableRequestErr;
-  let mockFn;
-  let mockFnErr;
-  let arg;
-  let requestObj;
-  let requested;
-  let canceled;
-  let afterCancelRequest;
+  let cancelableRequest: CancelableRequest;
+  let cancelableRequestErr: CancelableRequest;
+  let mockFn: ITargetRequest<any>;
+  let mockFnErr: ITargetRequest<Error>;
+  let arg: Object;
+  let afterCancelRequest: () => void;
 
   beforeEach(() => {
     jest.resetModules();
     afterCancelRequest = jest.fn();
     mockFn = jest.fn((data) => Promise.resolve(data));
     cancelableRequest = new CancelableRequest(mockFn, 'test', afterCancelRequest);
-    cancelableRequestErr = new CancelableRequest(mockFnErr);
     mockFnErr = jest.fn(() => Promise.reject(testError));
+    cancelableRequestErr = new CancelableRequest(mockFnErr);
     arg = {};
-    requestObj = {};
-    requested = true;
-    canceled = true;
   });
 
-  it('request resolve', () => {
-    return cancelableRequest.request(arg).then((data) => {
+  it('request resolve', () =>
+    cancelableRequest.request(arg).then((data) => {
       expect(data).toEqual(arg);
       expect(mockFn).toHaveBeenCalledTimes(1);
       expect(cancelableRequest._requested).toBe(false);
-    });
-  });
+    }));
 
   it('request reject', () => {
     expect.assertions(2);
@@ -75,39 +69,27 @@ describe('CancelableRequest', () => {
     });
   });
 
-  it('set requestObj', () => {
-    cancelableRequest.requestObj = requestObj;
-
-    expect(cancelableRequest._requestObj).toEqual(requestObj);
-  });
-
-  it('get requestObj', () => {
-    cancelableRequest.requestObj = requestObj;
-
-    expect(cancelableRequest.requestObj).toEqual(requestObj);
-  });
-
   it('set requested', () => {
-    cancelableRequest.requested = requested;
+    cancelableRequest.requested = true;
 
-    expect(cancelableRequest._requested).toEqual(requested);
+    expect(cancelableRequest._requested).toEqual(true);
   });
 
   it('get requested', () => {
-    cancelableRequest.requested = requested;
+    cancelableRequest.requested = true;
 
-    expect(cancelableRequest.requested).toEqual(requested);
+    expect(cancelableRequest.requested).toEqual(true);
   });
 
   it('set canceled', () => {
-    cancelableRequest.canceled = canceled;
+    cancelableRequest.canceled = true;
 
-    expect(cancelableRequest._canceled).toEqual(canceled);
+    expect(cancelableRequest._canceled).toEqual(true);
   });
 
   it('get canceled', () => {
-    cancelableRequest.canceled = canceled;
+    cancelableRequest.canceled = true;
 
-    expect(cancelableRequest.canceled).toEqual(canceled);
+    expect(cancelableRequest.canceled).toEqual(true);
   });
 });

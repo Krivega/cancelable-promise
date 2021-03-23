@@ -1,9 +1,8 @@
 import cancelablePromise, { isCanceledError } from '../cancelablePromise';
 
 describe('cancelablePromise', () => {
-  it('resolved', () => {
-    return cancelablePromise(Promise.resolve(true)).then((data) => expect(data).toBe(true));
-  });
+  it('resolved', () =>
+    cancelablePromise(Promise.resolve(true)).then((data) => expect(data).toBe(true)));
 
   it('rejected', () => {
     expect.assertions(1);
