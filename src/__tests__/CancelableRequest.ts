@@ -16,7 +16,7 @@ describe('CancelableRequest', () => {
     mockFn = jest.fn((data) => Promise.resolve(data));
     cancelableRequest = new CancelableRequest(mockFn, 'test', afterCancelRequest);
     mockFnErr = jest.fn(() => Promise.reject(testError));
-    cancelableRequestErr = new CancelableRequest(mockFnErr);
+    cancelableRequestErr = new CancelableRequest<ReturnType<typeof mockFnErr>>(mockFnErr);
     arg = {};
   });
 

@@ -5,21 +5,23 @@ export interface ITargetRequest<T> {
   (...args: any[]): Promise<T>;
 }
 
-export default class CancelableRequest<T = any> {
+type TThenArgRecursive<T> = T extends PromiseLike<infer U> ? TThenArgRecursive<U> : T;
+
+export default class CancelableRequest<T = Promise<any>> {
   _requested: boolean;
 
   _canceled: boolean;
 
-  _cancelablePromise?: ICancelablePromise<T>;
+  _cancelablePromise?: ICancelablePromise<any>;
 
   moduleName: string;
 
-  targetRequest: ITargetRequest<T>;
+  targetRequest: ITargetRequest<TThenArgRecursive<T>>;
 
   afterCancelRequest: () => void;
 
   constructor(
-    targetRequest: ITargetRequest<T>,
+    targetRequest: ITargetRequest<TThenArgRecursive<T>>,
     moduleName?: string,
     afterCancelRequest = () => {}
   ) {
@@ -31,18 +33,18 @@ export default class CancelableRequest<T = any> {
     this.afterCancelRequest = afterCancelRequest;
   }
 
-  request = async (...args: any[]) => {
+  request = async (...args: any[]): Promise<TThenArgRecursive<T>> => {
     this.cancelRequest();
     this.requested = true;
     this.canceled = false;
 
-    this._cancelablePromise = createCancelablePromise<T>(
+    this._cancelablePromise = createCancelablePromise<TThenArgRecursive<T>>(
       this.targetRequest(...args),
       this.moduleName
     );
 
     try {
-      const result: T = (await this.cancelablePromise) as T;
+      const result: TThenArgRecursive<T> = (await this.cancelablePromise) as TThenArgRecursive<T>;
 
       this.requested = false;
 
