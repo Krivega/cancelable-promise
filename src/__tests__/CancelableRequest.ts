@@ -1,23 +1,26 @@
 import CancelableRequest, { isCanceledError } from '../CancelableRequest';
 import type { ITargetRequest } from '../CancelableRequest';
 
+const testError = new Error('error');
+const arg = { id: 'test' };
+
 describe('CancelableRequest', () => {
-  const testError = new Error('error');
-  let cancelableRequest: CancelableRequest;
+  let cancelableRequest: CancelableRequest<Parameters<typeof mockFn>[0], ReturnType<typeof mockFn>>;
   let cancelableRequestErr: CancelableRequest;
-  let mockFn: ITargetRequest<any>;
-  let mockFnErr: ITargetRequest<Error>;
-  let arg: Object;
+  let mockFn: ITargetRequest<typeof arg, typeof arg>;
+  let mockFnErr: ITargetRequest<any, Error>;
   let afterCancelRequest: () => void;
 
   beforeEach(() => {
     jest.resetModules();
     afterCancelRequest = jest.fn();
     mockFn = jest.fn((data) => Promise.resolve(data));
-    cancelableRequest = new CancelableRequest(mockFn, 'test', afterCancelRequest);
+    cancelableRequest = new CancelableRequest<
+      Parameters<typeof mockFn>[0],
+      ReturnType<typeof mockFn>
+    >(mockFn, 'test', afterCancelRequest);
     mockFnErr = jest.fn(() => Promise.reject(testError));
     cancelableRequestErr = new CancelableRequest<ReturnType<typeof mockFnErr>>(mockFnErr);
-    arg = {};
   });
 
   it('request resolve', () =>
