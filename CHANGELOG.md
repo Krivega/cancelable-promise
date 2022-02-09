@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/Krivega/cancelable-promise/compare/v0.1.10...v0.2.0) (2022-02-09)
+
+### ⚠ BREAKING CHANGES
+
+- fix isCanceled error and move this from children modules
+
+### Features
+
+- fix isCanceled error and move this from children modules ([fc743bd](https://github.com/Krivega/cancelable-promise/commit/fc743bdbc7928252f335f855510e6f07c2ec06b5))
+
 ### [0.1.10](https://github.com/Krivega/cancelable-promise/compare/v0.1.9...v0.1.10) (2022-01-18)
 
 ### [0.1.9](https://github.com/Krivega/cancelable-promise/compare/v0.1.8...v0.1.9) (2021-03-25)
