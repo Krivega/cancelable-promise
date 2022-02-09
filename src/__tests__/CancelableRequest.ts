@@ -1,4 +1,5 @@
-import CancelableRequest, { isCanceledError } from '../CancelableRequest';
+import CancelableRequest from '../CancelableRequest';
+import { isCanceledError } from '../error';
 import type { ITargetRequest } from '../CancelableRequest';
 
 const testError = new Error('error');

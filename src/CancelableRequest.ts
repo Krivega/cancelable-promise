@@ -1,4 +1,4 @@
-import createCancelablePromise, { isCanceledError as _isCanceledError } from './cancelablePromise';
+import createCancelablePromise from './cancelablePromise';
 import type { ICancelablePromise } from './cancelablePromise';
 
 export interface ITargetRequest<P, R> {
@@ -91,5 +91,3 @@ export default class CancelableRequest<P = any, R = Promise<any>> {
     return this._canceled;
   }
 }
-
-export const isCanceledError = _isCanceledError;

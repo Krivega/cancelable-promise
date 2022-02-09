@@ -1,4 +1,5 @@
-import cancelablePromise, { isCanceledError } from '../cancelablePromise';
+import cancelablePromise from '../cancelablePromise';
+import { isCanceledError } from '../error';
 
 describe('cancelablePromise', () => {
   it('resolved', () => {
