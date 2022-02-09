@@ -15,13 +15,15 @@ export interface IErrorCanceled<T> {
 export const createErrorCanceled = <T = any>(
   basePromise: Promise<T>,
   moduleName = ''
-): IErrorCanceled<T> => ({
-  basePromise,
-  moduleName,
-  id: idError,
-  name: 'Canceled',
-  message: 'Promise is canceled',
-});
+): IErrorCanceled<T> => {
+  return {
+    basePromise,
+    moduleName,
+    id: idError,
+    name: 'Canceled',
+    message: 'Promise is canceled',
+  };
+};
 
 const createCancelablePromise = <T = any>(
   basePromise: Promise<T>,
@@ -43,6 +45,8 @@ const createCancelablePromise = <T = any>(
   return cancelablePromise;
 };
 
-export const isCanceledError = ({ id }: any): boolean => id === idError;
+export const isCanceledError = ({ id }: any): boolean => {
+  return id === idError;
+};
 
 export default createCancelablePromise;

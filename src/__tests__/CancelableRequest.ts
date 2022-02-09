@@ -14,21 +14,26 @@ describe('CancelableRequest', () => {
   beforeEach(() => {
     jest.resetModules();
     afterCancelRequest = jest.fn();
-    mockFn = jest.fn((data) => Promise.resolve(data));
+    mockFn = jest.fn((data) => {
+      return Promise.resolve(data);
+    });
     cancelableRequest = new CancelableRequest<
       Parameters<typeof mockFn>[0],
       ReturnType<typeof mockFn>
     >(mockFn, 'test', afterCancelRequest);
-    mockFnErr = jest.fn(() => Promise.reject(testError));
+    mockFnErr = jest.fn(() => {
+      return Promise.reject(testError);
+    });
     cancelableRequestErr = new CancelableRequest<ReturnType<typeof mockFnErr>>(mockFnErr);
   });
 
-  it('request resolve', () =>
-    cancelableRequest.request(arg).then((data) => {
+  it('request resolve', () => {
+    return cancelableRequest.request(arg).then((data) => {
       expect(data).toEqual(arg);
       expect(mockFn).toHaveBeenCalledTimes(1);
       expect(cancelableRequest._requested).toBe(false);
-    }));
+    });
+  });
 
   it('request reject', () => {
     expect.assertions(2);
@@ -52,13 +57,14 @@ describe('CancelableRequest', () => {
     });
   });
 
-  it('cancelRequest wait request', () =>
-    cancelableRequest.request(arg).then(() => {
+  it('cancelRequest wait request', () => {
+    return cancelableRequest.request(arg).then(() => {
       cancelableRequest.cancelRequest();
 
       expect(cancelableRequest._requested).toEqual(false);
       expect(cancelableRequest._canceled).toEqual(false);
-    }));
+    });
+  });
 
   it('afterCancelRequest', () => {
     const promise = cancelableRequest.request(arg);
