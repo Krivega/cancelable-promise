@@ -1,5 +1,5 @@
 import cancelablePromise from './cancelablePromise';
 import CancelableRequest from './CancelableRequest';
-import { isCanceledError } from './error';
+import { isCanceledError, createErrorCanceled } from './error';
 
-export { cancelablePromise, CancelableRequest, isCanceledError };
+export { cancelablePromise, CancelableRequest, isCanceledError, createErrorCanceled };
