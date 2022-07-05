@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/Krivega/cancelable-promise/compare/v0.3.0...v0.4.0) (2022-07-05)
+
+### ⚠ BREAKING CHANGES
+
+- change api afterCancelRequest, moduleName
+
+### Features
+
+- add basePromise to params afterCancelRequest ([ede5589](https://github.com/Krivega/cancelable-promise/commit/ede55894edc6be3eb3b6531574027e71f2651e5f))
+- change api afterCancelRequest, moduleName ([8744523](https://github.com/Krivega/cancelable-promise/commit/87445233e7023a5c3f1141813f18dab4f3e55f7f))
+
 ## [0.3.0](https://github.com/Krivega/cancelable-promise/compare/v0.2.0...v0.3.0) (2022-02-09)
 
 ### ⚠ BREAKING CHANGES

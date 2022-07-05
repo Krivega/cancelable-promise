@@ -1,6 +1,6 @@
 {
   "name": "@krivega/cancelable-promise",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Cancelable abstraction over promise",
   "keywords": [
     "promise"
