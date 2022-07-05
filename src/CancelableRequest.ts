@@ -16,14 +16,16 @@ export default class CancelableRequest<P = any, R = Promise<any>> {
 
   moduleName: string;
 
+  _basePromise?: Promise<TThenArgRecursive<R>>;
+
   targetRequest: ITargetRequest<P, TThenArgRecursive<R>>;
 
-  afterCancelRequest: () => void;
+  afterCancelRequest: (basePromise: Promise<TThenArgRecursive<R>>) => void;
 
   constructor(
     targetRequest: ITargetRequest<P, TThenArgRecursive<R>>,
     moduleName?: string,
-    afterCancelRequest = () => {}
+    afterCancelRequest: (basePromise: Promise<TThenArgRecursive<R>>) => void = () => {}
   ) {
     this._requested = false;
     this._canceled = false;
@@ -38,8 +40,12 @@ export default class CancelableRequest<P = any, R = Promise<any>> {
     this.requested = true;
     this.canceled = false;
 
+    const basePromise = this.targetRequest(data);
+
+    this._basePromise = basePromise;
+
     this._cancelablePromise = createCancelablePromise<TThenArgRecursive<R>>(
-      this.targetRequest(data),
+      basePromise,
       this.moduleName
     );
 
@@ -63,7 +69,8 @@ export default class CancelableRequest<P = any, R = Promise<any>> {
       this.requested = false;
       this.canceled = true;
       request.cancel();
-      this.afterCancelRequest();
+      this.afterCancelRequest(this._basePromise as Promise<TThenArgRecursive<R>>);
+      delete this._basePromise;
     }
   }
 

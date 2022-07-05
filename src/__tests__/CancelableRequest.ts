@@ -78,12 +78,13 @@ describe('CancelableRequest', () => {
   });
 
   it('afterCancelRequest', () => {
-    expect.assertions(2);
+    expect.assertions(3);
 
+    const basePromise = Promise.resolve();
     const afterCancelRequest = jest.fn();
     const cancelableRequest = new CancelableRequest<void>(
       () => {
-        return Promise.resolve();
+        return basePromise;
       },
       'test',
       afterCancelRequest
@@ -97,6 +98,7 @@ describe('CancelableRequest', () => {
 
     return promise.catch((error) => {
       expect(isCanceledError(error)).toEqual(true);
+      expect(afterCancelRequest).toHaveBeenCalledWith(basePromise);
     });
   });
 
