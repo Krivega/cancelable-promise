@@ -86,8 +86,9 @@ describe('CancelableRequest', () => {
       () => {
         return basePromise;
       },
-      'test',
-      afterCancelRequest
+      {
+        afterCancelRequest,
+      }
     );
 
     const promise = cancelableRequest.request();

@@ -18,21 +18,26 @@ export default class CancelableRequest<P = any, R = Promise<any>> {
 
   _basePromise?: Promise<TThenArgRecursive<R>>;
 
-  targetRequest: ITargetRequest<P, TThenArgRecursive<R>>;
+  _targetRequest: ITargetRequest<P, TThenArgRecursive<R>>;
 
-  afterCancelRequest: (basePromise: Promise<TThenArgRecursive<R>>) => void;
+  _afterCancelRequest?: (basePromise: Promise<TThenArgRecursive<R>>) => void;
 
   constructor(
     targetRequest: ITargetRequest<P, TThenArgRecursive<R>>,
-    moduleName?: string,
-    afterCancelRequest: (basePromise: Promise<TThenArgRecursive<R>>) => void = () => {}
+    {
+      moduleName,
+      afterCancelRequest,
+    }: {
+      moduleName?: string;
+      afterCancelRequest?: (basePromise: Promise<TThenArgRecursive<R>>) => void;
+    } = {}
   ) {
     this._requested = false;
     this._canceled = false;
 
-    this.targetRequest = targetRequest;
+    this._targetRequest = targetRequest;
     this.moduleName = moduleName || this.constructor.name;
-    this.afterCancelRequest = afterCancelRequest;
+    this._afterCancelRequest = afterCancelRequest;
   }
 
   request = async (data: P): Promise<TThenArgRecursive<R>> => {
@@ -40,7 +45,7 @@ export default class CancelableRequest<P = any, R = Promise<any>> {
     this.requested = true;
     this.canceled = false;
 
-    const basePromise = this.targetRequest(data);
+    const basePromise = this._targetRequest(data);
 
     this._basePromise = basePromise;
 
@@ -69,9 +74,16 @@ export default class CancelableRequest<P = any, R = Promise<any>> {
       this.requested = false;
       this.canceled = true;
       request.cancel();
-      this.afterCancelRequest(this._basePromise as Promise<TThenArgRecursive<R>>);
-      delete this._basePromise;
+      this._processAfterCancelRequest();
     }
+  }
+
+  _processAfterCancelRequest() {
+    if (this._afterCancelRequest) {
+      this._afterCancelRequest(this._basePromise as Promise<TThenArgRecursive<R>>);
+    }
+
+    delete this._basePromise;
   }
 
   set cancelablePromise(cancelablePromise) {
