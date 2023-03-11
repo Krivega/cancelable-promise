@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.5.0](https://github.com/Krivega/cancelable-promise/compare/v0.4.0...v0.5.0) (2023-03-11)
+
+### ⚠ BREAKING CHANGES
+
+- add params cancellationResolvesPromise and cancellationResolvesRequest
+
+### Features
+
+- add params cancellationResolvesPromise and cancellationResolvesRequest ([39a8ee4](https://github.com/Krivega/cancelable-promise/commit/39a8ee43568099ecf27ce59d3731b82af0af8067))
+
 ## [0.4.0](https://github.com/Krivega/cancelable-promise/compare/v0.3.0...v0.4.0) (2022-07-05)
 
 ### ⚠ BREAKING CHANGES
