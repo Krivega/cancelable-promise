@@ -103,6 +103,26 @@ describe('CancelableRequest', () => {
     });
   });
 
+  it('cancellation resolves request', () => {
+    expect.assertions(1);
+
+    const basePromise = Promise.resolve(true);
+    const cancelableRequest = new CancelableRequest<void>(
+      () => {
+        return basePromise;
+      },
+      {
+        cancellationResolvesRequest: true,
+      }
+    );
+
+    const promise = cancelableRequest.request();
+
+    cancelableRequest.cancelRequest();
+
+    return expect(promise).resolves.toBe(undefined);
+  });
+
   it('set requested', () => {
     const cancelableRequest = new CancelableRequest<void>(() => {
       return Promise.resolve();

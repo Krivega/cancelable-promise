@@ -34,6 +34,19 @@ describe('cancelablePromise', () => {
     });
   });
 
+  it('cancellation resolves promise', () => {
+    expect.assertions(1);
+
+    const basePromise = Promise.resolve(true);
+    const promise = cancelablePromise(basePromise, {
+      cancellationResolvesPromise: true,
+    });
+
+    promise.cancel();
+
+    return expect(promise).resolves.toBe(undefined);
+  });
+
   it('canceled reject', () => {
     expect.assertions(2);
 
