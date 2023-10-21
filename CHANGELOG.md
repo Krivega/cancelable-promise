@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/Krivega/cancelable-promise/compare/v1.0.0...v1.1.0) (2023-10-21)
+
+### Features
+
+- export types ([ede7b0e](https://github.com/Krivega/cancelable-promise/commit/ede7b0e8f4496d11128b05050a249b8b166259ee))
+
 ## [1.0.0](https://github.com/Krivega/cancelable-promise/compare/v0.5.0...v1.0.0) (2023-10-21)
 
 ### Bug Fixes
