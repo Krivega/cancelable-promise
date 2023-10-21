@@ -1,14 +1,15 @@
+/* eslint-disable jest/no-conditional-expect */
 import cancelablePromise from '../cancelablePromise';
 import { isCanceledError } from '../error';
 
 describe('cancelablePromise', () => {
-  it('resolved', () => {
+  it('resolved', async () => {
     return cancelablePromise(Promise.resolve(true)).then((data) => {
-      return expect(data).toBe(true);
+      expect(data).toBe(true);
     });
   });
 
-  it('rejected', () => {
+  it('rejected', async () => {
     expect.assertions(1);
 
     const basePromiseError = new Error('error');
@@ -20,7 +21,7 @@ describe('cancelablePromise', () => {
     });
   });
 
-  it('canceled resolve', () => {
+  it('canceled resolve', async () => {
     expect.assertions(2);
 
     const basePromise = Promise.resolve(true);
@@ -30,11 +31,12 @@ describe('cancelablePromise', () => {
 
     return promise.catch((error) => {
       expect(isCanceledError(error)).toBe(true);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       expect(error.basePromise).toBe(basePromise);
     });
   });
 
-  it('cancellation resolves promise', () => {
+  it('cancellation resolves promise', async () => {
     expect.assertions(1);
 
     const basePromise = Promise.resolve(true);
@@ -47,7 +49,7 @@ describe('cancelablePromise', () => {
     return expect(promise).resolves.toBe(undefined);
   });
 
-  it('canceled reject', () => {
+  it('canceled reject', async () => {
     expect.assertions(2);
 
     const basePromise = Promise.reject(new Error('test'));
@@ -57,6 +59,7 @@ describe('cancelablePromise', () => {
 
     return promise.catch((error) => {
       expect(isCanceledError(error)).toBe(true);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       expect(error.basePromise).toBe(basePromise);
     });
   });

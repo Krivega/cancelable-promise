@@ -1,8 +1,8 @@
 import { createErrorCanceled } from './error';
 
-export interface ICancelablePromise<T> extends Promise<T> {
+export type ICancelablePromise<T> = Promise<T> & {
   cancel: () => void;
-}
+};
 
 function createCancelablePromise<T = unknown>(
   basePromise: Promise<T>,
@@ -12,10 +12,10 @@ function createCancelablePromise<T = unknown>(
   }: {
     cancellationResolvesPromise?: boolean;
     moduleName?: string;
-  } = {}
+  } = {},
 ): ICancelablePromise<T> {
-  let rejectOuter: (reason?: any) => void;
-  let resolveOuter: (value: T | PromiseLike<T>) => void;
+  let rejectOuter: (reason?: unknown) => void;
+  let resolveOuter: (value: PromiseLike<T> | T) => void;
 
   const promise = new Promise<T>((resolve, reject) => {
     rejectOuter = reject;
@@ -26,7 +26,7 @@ function createCancelablePromise<T = unknown>(
   const cancelablePromise: ICancelablePromise<T> = promise as ICancelablePromise<T>;
 
   cancelablePromise.cancel = () => {
-    if (cancellationResolvesPromise) {
+    if (cancellationResolvesPromise === true) {
       resolveOuter(undefined as T);
     } else {
       rejectOuter(createErrorCanceled<T>(basePromise, moduleName));

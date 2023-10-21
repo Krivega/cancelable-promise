@@ -1,3 +1,4 @@
+/* eslint-disable jest/no-conditional-expect */
 import CancelableRequest from '../CancelableRequest';
 import { isCanceledError } from '../error';
 
@@ -8,87 +9,90 @@ describe('CancelableRequest', () => {
   //   jest.resetModules();
   // });
 
-  it('request resolve', () => {
+  it('request resolve', async () => {
     expect.assertions(3);
 
-    const mockFn = jest.fn((data: { id: string }) => {
-      return Promise.resolve(data);
+    const mockFunction = jest.fn(async (data: { id: string }) => {
+      return data;
     });
     const cancelableRequest = new CancelableRequest<
-      Parameters<typeof mockFn>[0],
-      ReturnType<typeof mockFn>
-    >(mockFn);
+      Parameters<typeof mockFunction>[0],
+      ReturnType<typeof mockFunction>
+    >(mockFunction);
 
-    const arg = { id: 'test' };
+    const argument = { id: 'test' };
 
-    return cancelableRequest.request(arg).then((data) => {
-      expect(data).toEqual(arg);
-      expect(mockFn).toHaveBeenCalledTimes(1);
-      expect(cancelableRequest._requested).toBe(false);
+    return cancelableRequest.request(argument).then((data) => {
+      expect(data).toEqual(argument);
+      expect(mockFunction).toHaveBeenCalledTimes(1);
+      expect(cancelableRequest.requested).toBe(false);
     });
   });
 
-  it('request reject', () => {
+  it('request reject', async () => {
     expect.assertions(2);
 
-    const cancelableRequestErr = new CancelableRequest<void>(() => {
-      return Promise.reject(testError);
+    const cancelableRequestError = new CancelableRequest<void>(async () => {
+      throw testError;
     });
 
-    return cancelableRequestErr.request().catch((data) => {
-      expect(data).toEqual(testError);
-      expect(cancelableRequestErr._requested).toBe(false);
+    return cancelableRequestError.request().catch((error) => {
+      expect(error).toEqual(testError);
+      expect(cancelableRequestError.requested).toBe(false);
     });
   });
 
-  it('cancelRequest no wait request', () => {
-    expect.assertions(4);
+  it('cancelRequest no wait request', async () => {
+    expect.assertions(6);
 
     const basePromise = Promise.resolve();
+    // eslint-disable-next-line @typescript-eslint/promise-function-async
     const cancelableRequest = new CancelableRequest<void>(() => {
       return basePromise;
     });
 
     const promise = cancelableRequest.request();
 
+    expect(cancelableRequest.requested).toEqual(true);
+    expect(cancelableRequest.canceled).toEqual(false);
+
     cancelableRequest.cancelRequest();
 
-    expect(cancelableRequest._requested).toEqual(false);
-    expect(cancelableRequest._canceled).toEqual(true);
+    expect(cancelableRequest.requested).toEqual(false);
+    expect(cancelableRequest.canceled).toEqual(true);
 
     return promise.catch((error) => {
       expect(isCanceledError(error)).toEqual(true);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       expect(error.basePromise).toBe(basePromise);
     });
   });
 
-  it('cancelRequest wait request', () => {
+  it('cancelRequest wait request', async () => {
     expect.assertions(2);
 
-    const cancelableRequest = new CancelableRequest<void>(() => {
-      return Promise.resolve();
-    });
+    const cancelableRequest = new CancelableRequest<void>(async () => {});
 
     return cancelableRequest.request().then(() => {
       cancelableRequest.cancelRequest();
 
-      expect(cancelableRequest._requested).toEqual(false);
-      expect(cancelableRequest._canceled).toEqual(false);
+      expect(cancelableRequest.requested).toEqual(false);
+      expect(cancelableRequest.canceled).toEqual(false);
     });
   });
 
-  it('afterCancelRequest', () => {
+  it('afterCancelRequest', async () => {
     expect.assertions(3);
 
     const basePromise = Promise.resolve();
     const afterCancelRequest = jest.fn();
     const cancelableRequest = new CancelableRequest<void>(
-      () => {
+      async () => {
         return basePromise;
       },
       {
         afterCancelRequest,
-      }
+      },
     );
 
     const promise = cancelableRequest.request();
@@ -103,17 +107,17 @@ describe('CancelableRequest', () => {
     });
   });
 
-  it('cancellation resolves request', () => {
+  it('cancellation resolves request', async () => {
     expect.assertions(1);
 
     const basePromise = Promise.resolve(true);
     const cancelableRequest = new CancelableRequest<void>(
-      () => {
+      async () => {
         return basePromise;
       },
       {
         cancellationResolvesRequest: true,
-      }
+      },
     );
 
     const promise = cancelableRequest.request();
@@ -121,45 +125,5 @@ describe('CancelableRequest', () => {
     cancelableRequest.cancelRequest();
 
     return expect(promise).resolves.toBe(undefined);
-  });
-
-  it('set requested', () => {
-    const cancelableRequest = new CancelableRequest<void>(() => {
-      return Promise.resolve();
-    });
-
-    cancelableRequest.requested = true;
-
-    expect(cancelableRequest._requested).toEqual(true);
-  });
-
-  it('get requested', () => {
-    const cancelableRequest = new CancelableRequest<void>(() => {
-      return Promise.resolve();
-    });
-
-    cancelableRequest.requested = true;
-
-    expect(cancelableRequest.requested).toEqual(true);
-  });
-
-  it('set canceled', () => {
-    const cancelableRequest = new CancelableRequest<void>(() => {
-      return Promise.resolve();
-    });
-
-    cancelableRequest.canceled = true;
-
-    expect(cancelableRequest._canceled).toEqual(true);
-  });
-
-  it('get canceled', () => {
-    const cancelableRequest = new CancelableRequest<void>(() => {
-      return Promise.resolve();
-    });
-
-    cancelableRequest.canceled = true;
-
-    expect(cancelableRequest.canceled).toEqual(true);
   });
 });

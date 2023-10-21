@@ -1,16 +1,16 @@
-const idError = 'ERROR_CANCELED' as 'ERROR_CANCELED';
+const idError = 'ERROR_CANCELED' as const;
 
-export interface IErrorCanceled<T> {
+export type IErrorCanceled<T> = {
   basePromise: Promise<T>;
   moduleName?: string;
   id: typeof idError;
   name: 'Canceled';
   message: 'Promise is canceled';
-}
+};
 
 export const createErrorCanceled = <T = any>(
   basePromise: Promise<T>,
-  moduleName = ''
+  moduleName = '',
 ): IErrorCanceled<T> => {
   return {
     basePromise,
@@ -22,5 +22,6 @@ export const createErrorCanceled = <T = any>(
 };
 
 export const isCanceledError = (error: any): boolean => {
-  return error && error.id === idError;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  return typeof error === 'object' && 'id' in error && error.id === idError;
 };
