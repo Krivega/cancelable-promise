@@ -5,20 +5,13 @@ import { isCanceledError } from '../error';
 const testError = new Error('error');
 
 describe('CancelableRequest', () => {
-  // beforeEach(() => {
-  //   jest.resetModules();
-  // });
-
   it('request resolve', async () => {
     expect.assertions(3);
 
     const mockFunction = jest.fn(async (data: { id: string }) => {
       return data;
     });
-    const cancelableRequest = new CancelableRequest<
-      Parameters<typeof mockFunction>[0],
-      ReturnType<typeof mockFunction>
-    >(mockFunction);
+    const cancelableRequest = new CancelableRequest(mockFunction);
 
     const argument = { id: 'test' };
 
@@ -47,7 +40,7 @@ describe('CancelableRequest', () => {
 
     const basePromise = Promise.resolve();
     // eslint-disable-next-line @typescript-eslint/promise-function-async
-    const cancelableRequest = new CancelableRequest<void>(() => {
+    const cancelableRequest = new CancelableRequest(() => {
       return basePromise;
     });
 
