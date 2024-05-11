@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
 const idError = 'ERROR_CANCELED' as const;
 
 export type IErrorCanceled<T> = {

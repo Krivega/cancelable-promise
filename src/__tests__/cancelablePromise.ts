@@ -1,5 +1,8 @@
+/// <reference types="jest" />
+
 /* eslint-disable jest/no-conditional-expect */
 import cancelablePromise from '../cancelablePromise';
+import type { IErrorCanceled } from '../error';
 import { isCanceledError } from '../error';
 
 describe('cancelablePromise', () => {
@@ -16,7 +19,7 @@ describe('cancelablePromise', () => {
     const basePromise = Promise.reject(basePromiseError);
     const promise = cancelablePromise(basePromise);
 
-    return promise.catch((error) => {
+    return promise.catch((error: unknown) => {
       expect(error).toBe(basePromiseError);
     });
   });
@@ -29,10 +32,9 @@ describe('cancelablePromise', () => {
 
     promise.cancel();
 
-    return promise.catch((error) => {
+    return promise.catch((error: unknown) => {
       expect(isCanceledError(error)).toBe(true);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      expect(error.basePromise).toBe(basePromise);
+      expect((error as IErrorCanceled<unknown>).basePromise).toBe(basePromise);
     });
   });
 
@@ -57,10 +59,9 @@ describe('cancelablePromise', () => {
 
     promise.cancel();
 
-    return promise.catch((error) => {
+    return promise.catch((error: unknown) => {
       expect(isCanceledError(error)).toBe(true);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      expect(error.basePromise).toBe(basePromise);
+      expect((error as IErrorCanceled<unknown>).basePromise).toBe(basePromise);
     });
   });
 });

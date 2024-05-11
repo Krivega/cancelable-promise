@@ -20,7 +20,10 @@ function createCancelablePromise<T = unknown>(
   const promise = new Promise<T>((resolve, reject) => {
     rejectOuter = reject;
     resolveOuter = resolve;
-    basePromise.then(resolve).catch(reject);
+    basePromise.then(resolve).catch((error: unknown) => {
+      // eslint-disable-next-line prefer-promise-reject-errors
+      reject(error as Error);
+    });
   });
 
   const cancelablePromise: ICancelablePromise<T> = promise as ICancelablePromise<T>;
