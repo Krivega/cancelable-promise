@@ -25,7 +25,6 @@
       "import": "./dist/index.js"
     }
   },
-  "main": "./dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
@@ -82,5 +81,8 @@
     "vite-plugin-dts": "^3.9.1",
     "vite-tsconfig-paths": "^4.3.2"
   },
-  "peerDependencies": {}
+  "peerDependencies": {},
+  "engines": {
+    "node": ">=16.0.0"
+  }
 }
