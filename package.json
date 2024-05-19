@@ -26,6 +26,16 @@
     }
   },
   "types": "dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "dist/index.d.ts": [
+        "dist/index.d.ts"
+      ],
+      "*": [
+        "dist/*"
+      ]
+    }
+  },
   "files": [
     "dist"
   ],
@@ -52,8 +62,8 @@
     "@commitlint/config-conventional": "^19.2.2",
     "@nabla/vite-plugin-eslint": "^2.0.4",
     "@types/jest": "^29.5.12",
-    "@typescript-eslint/eslint-plugin": "^7.8.0",
-    "@typescript-eslint/parser": "^7.8.0",
+    "@typescript-eslint/eslint-plugin": "^7.9.0",
+    "@typescript-eslint/parser": "^7.9.0",
     "cross-env": "^7.0.3",
     "eslint": "^8.52.0",
     "eslint-config-airbnb-base": "^15.0.0",
