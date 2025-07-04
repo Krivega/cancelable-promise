@@ -9,7 +9,7 @@ export type IErrorCanceled<T> = {
   message: 'Promise is canceled';
 };
 
-export const createErrorCanceled = <T = any>(
+export const createErrorCanceled = <T>(
   basePromise: Promise<T>,
   moduleName = '',
 ): IErrorCanceled<T> => {
@@ -22,7 +22,7 @@ export const createErrorCanceled = <T = any>(
   };
 };
 
-export const isCanceledError = (error: any): boolean => {
+export const isCanceledError = (error: unknown): boolean => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  return typeof error === 'object' && 'id' in error && error.id === idError;
+  return typeof error === 'object' && error !== null && 'id' in error && error.id === idError;
 };

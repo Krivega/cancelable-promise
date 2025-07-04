@@ -5,7 +5,7 @@ export type ITargetRequest<P, R> = (data: P) => Promise<R>;
 
 type TThenArgumentRecursive<T> = T extends PromiseLike<infer U> ? TThenArgumentRecursive<U> : T;
 
-export default class CancelableRequest<P = void, R = Promise<any>> {
+export default class CancelableRequest<P = void, R = Promise<unknown>> {
   public moduleName: string;
 
   private readonly _cancellationResolvesRequest: boolean;
@@ -14,7 +14,7 @@ export default class CancelableRequest<P = void, R = Promise<any>> {
 
   private _canceled: boolean;
 
-  private _cancelablePromise?: ICancelablePromise<any>;
+  private _cancelablePromise?: ICancelablePromise<unknown>;
 
   private _basePromise?: Promise<TThenArgumentRecursive<R>>;
 
