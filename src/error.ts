@@ -22,7 +22,7 @@ export const createErrorCanceled = <T>(
   };
 };
 
-export const isCanceledError = (error: unknown): boolean => {
+export const isCanceledError = <T>(error: unknown): error is IErrorCanceled<T> => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   return typeof error === 'object' && error !== null && 'id' in error && error.id === idError;
 };
