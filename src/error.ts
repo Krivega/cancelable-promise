@@ -23,6 +23,5 @@ export const createErrorCanceled = <T>(
 };
 
 export const isCanceledError = <T>(error: unknown): error is TErrorCanceled<T> => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   return typeof error === 'object' && error !== null && 'id' in error && error.id === idError;
 };
