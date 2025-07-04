@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.4](https://github.com/Krivega/cancelable-promise/compare/v1.1.3...v1.1.4) (2025-07-04)
+
+### Bug Fixes
+
+- correct type isCanceledError ([3966345](https://github.com/Krivega/cancelable-promise/commit/3966345a7e7e37a2560ca1b2f1b31b273f309ea1))
+- correct type isCanceledError ([760a4da](https://github.com/Krivega/cancelable-promise/commit/760a4da419aa02056317c440754e64973de9c1c0))
+- types CancelableRequest ([bb26e06](https://github.com/Krivega/cancelable-promise/commit/bb26e0610a46863b836300ed1f1a26e809f0e39e))
+
 ### [1.1.3](https://github.com/Krivega/cancelable-promise/compare/v1.1.2...v1.1.3) (2024-05-21)
 
 ### Bug Fixes
