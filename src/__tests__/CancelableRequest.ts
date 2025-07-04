@@ -2,7 +2,7 @@
 
 /* eslint-disable jest/no-conditional-expect */
 import CancelableRequest from '../CancelableRequest';
-import type { IErrorCanceled } from '../error';
+import type { TErrorCanceled } from '../error';
 import { isCanceledError } from '../error';
 
 const testError = new Error('error');
@@ -59,7 +59,7 @@ describe('CancelableRequest', () => {
 
     return promise.catch((error: unknown) => {
       expect(isCanceledError(error)).toEqual(true);
-      expect((error as IErrorCanceled<unknown>).basePromise).toBe(basePromise);
+      expect((error as TErrorCanceled<unknown>).basePromise).toBe(basePromise);
     });
   });
 

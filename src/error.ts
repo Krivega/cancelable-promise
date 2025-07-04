@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
 const idError = 'ERROR_CANCELED' as const;
 
-export type IErrorCanceled<T> = {
+export type TErrorCanceled<T> = {
   basePromise: Promise<T>;
   moduleName?: string;
   id: typeof idError;
@@ -12,7 +12,7 @@ export type IErrorCanceled<T> = {
 export const createErrorCanceled = <T>(
   basePromise: Promise<T>,
   moduleName = '',
-): IErrorCanceled<T> => {
+): TErrorCanceled<T> => {
   return {
     basePromise,
     moduleName,
@@ -22,7 +22,7 @@ export const createErrorCanceled = <T>(
   };
 };
 
-export const isCanceledError = <T>(error: unknown): error is IErrorCanceled<T> => {
+export const isCanceledError = <T>(error: unknown): error is TErrorCanceled<T> => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   return typeof error === 'object' && error !== null && 'id' in error && error.id === idError;
 };

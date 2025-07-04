@@ -2,7 +2,7 @@
 
 /* eslint-disable jest/no-conditional-expect */
 import cancelablePromise from '../cancelablePromise';
-import type { IErrorCanceled } from '../error';
+import type { TErrorCanceled } from '../error';
 import { isCanceledError } from '../error';
 
 describe('cancelablePromise', () => {
@@ -34,7 +34,7 @@ describe('cancelablePromise', () => {
 
     return promise.catch((error: unknown) => {
       expect(isCanceledError(error)).toBe(true);
-      expect((error as IErrorCanceled<unknown>).basePromise).toBe(basePromise);
+      expect((error as TErrorCanceled<unknown>).basePromise).toBe(basePromise);
     });
   });
 
@@ -61,7 +61,7 @@ describe('cancelablePromise', () => {
 
     return promise.catch((error: unknown) => {
       expect(isCanceledError(error)).toBe(true);
-      expect((error as IErrorCanceled<unknown>).basePromise).toBe(basePromise);
+      expect((error as TErrorCanceled<unknown>).basePromise).toBe(basePromise);
     });
   });
 });
